@@ -6,107 +6,82 @@
  * @flow strict-local
  */
 
-import React from 'react';
-import type {Node} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import React, { useState } from 'react';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import {View, StyleSheet, Text, TouchableOpacity, TextInput} from 'react-native';
 
-const Section = ({children, title}): Node => {
-  const isDarkMode = useColorScheme() === 'dark';
+const App = () => {
+  const [account, setAccount] = useState('');
+  const [password, setPassword] = useState('');
+  const [message, setMessage] = useState();
+
+  const correctAccount = 'shaun779@gmail.com';
+  const correctPassword = 'Asd12345';
+
+  const correctDom = <Text style={{color:'#FFA6FF', fontSize:30}}>登入成功</Text>;
+  const wrongDom = <Text style={{color:'#EA0000', fontSize:30}}>帳號或密碼錯誤</Text>
+
+  const loginCheck = () => {
+    if(account === correctAccount & password === correctPassword){
+      return setMessage(correctDom)
+    }else {
+      return setMessage(wrongDom)
+    };
+  }
+
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
+    <View style={styles.container}>
+      <TextInput 
+        maxLength={50}
+        style={styles.inputBox}
+        keyboardType='email-address'
+        placeholder='請輸入帳號'
+        onChangeText={(text) => setAccount(text)}
+        value={account}
+      />
+      <TextInput 
+        maxLength={8}
+        style={styles.inputBox}
+        keyboardType='numbers-and-punctuation'
+        secureTextEntry='true'
+        placeholder='請輸入密碼'
+        onChangeText={(text) => setPassword(text)}
+        value={password}
+      />
+      {message}
+      <TouchableOpacity style={styles.button} onPress={loginCheck}>
+        <Text style={{color:'white', textAlign:'center', fontSize:25, fontWeight: 'bold', padding: 10}}>
+          Enter
+        </Text>
+      </TouchableOpacity>
     </View>
   );
-};
-
-const App: () => Node = () => {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.js</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-};
+}
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  container: {
+    backgroundColor: '#005757',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
+  inputBox: {
+    width: 300,
+    height: 50,
+    borderRadius: 0,
+    borderColor: 'darkgray',
+    backgroundColor: 'white',
+    textAlign: 'center',
+    fontSize: 20,
+    marginBottom: 20
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
+  button: {
+    backgroundColor: '#00A600',
+    width: 300,
+    height: 50,
+    borderRadius: 20,
+    marginTop: 30
+  }
 });
 
 export default App;
